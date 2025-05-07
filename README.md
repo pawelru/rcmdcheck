@@ -1,9 +1,9 @@
 Run R CMD check from R and Capture Results
 ================
 
--   [rcmdcheck](#rcmdcheck)
-    -   [Installation](#installation)
-    -   [Usage](#usage)
+- [rcmdcheck](#rcmdcheck)
+  - [Installation](#installation)
+  - [Usage](#usage)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -19,7 +19,7 @@ Run R CMD check from R and Capture Results
 downloads](https://cranlogs.r-pkg.org/badges/rcmdcheck)](https://www.r-pkg.org/pkg/rcmdcheck)
 [![R-CMD-check](https://github.com/r-lib/rcmdcheck/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/rcmdcheck/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/r-lib/rcmdcheck/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/rcmdcheck?branch=main)
+coverage](https://codecov.io/gh/r-lib/rcmdcheck/graph/badge.svg)](https://app.codecov.io/gh/r-lib/rcmdcheck)
 <!-- badges: end -->
 
 Run R CMD check from R programmatically and capture the results of the
@@ -65,7 +65,7 @@ library(rcmdcheck)
 chk <- rcmdcheck("tests/testthat/bad1", quiet = TRUE)
 chk
 #> ── R CMD check results ─────────────────────────────────── badpackage 1.0.0 ────
-#> Duration: 12.2s
+#> Duration: 12.5s
 #> 
 #> ❯ checking DESCRIPTION meta-information ... WARNING
 #>   Non-standard license specification:
@@ -85,22 +85,22 @@ names(check_details(chk))
 #> [11] "cran"         "bioc"
 ```
 
--   `package`: Package name.
--   `version`: Package version number.
--   `notes`: Character vector of check `NOTE`s.
--   `warnings`: Character vector of check `WARNING`s.
--   `errors`: Character vector of check `ERROR`s.
--   `platform`: Platform, e.g. `x86_64-apple-darwin15.6.0`.
--   `checkdir`: Check directory.
--   `install_out`: Output of the package installation.
--   `description`: The text of the `DESCRIPTION` file.
--   `session_info`: A `sessioninfo::session_info` object, session
-    information from within the check process.
--   `cran`: Flag, whether this is a CRAN package. (Based on the
-    `Repository` field in `DESCRIPTION`, which is typically only set for
-    published CRAN packages.)
--   `bioc`: Flag, whether this is a Bioconductor package, based on the
-    presence of the `biocViews` field in `DESCRIPTION`.
+- `package`: Package name.
+- `version`: Package version number.
+- `notes`: Character vector of check `NOTE`s.
+- `warnings`: Character vector of check `WARNING`s.
+- `errors`: Character vector of check `ERROR`s.
+- `platform`: Platform, e.g. `x86_64-apple-darwin15.6.0`.
+- `checkdir`: Check directory.
+- `install_out`: Output of the package installation.
+- `description`: The text of the `DESCRIPTION` file.
+- `session_info`: A `sessioninfo::session_info` object, session
+  information from within the check process.
+- `cran`: Flag, whether this is a CRAN package. (Based on the
+  `Repository` field in `DESCRIPTION`, which is typically only set for
+  published CRAN packages.)
+- `bioc`: Flag, whether this is a Bioconductor package, based on the
+  presence of the `biocViews` field in `DESCRIPTION`.
 
 Note that if the check results were parsed from a file, some of these
 fields might be missing (`NULL`), as we don’t have access to the
@@ -133,123 +133,204 @@ cran_check_flavours()
 ``` r
 cran_check_results("igraph")
 #> $`r-devel-linux-x86_64-debian-clang`
-#> ── R CMD check results ─────────────────────────────────────── igraph 1.4.1 ────
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
 #> Duration: 0ms
 #> 
-#> 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
+#> ❯ checking compiled code ... NOTE
+#>   File ‘igraph/libs/igraph.so’:
+#>     Found non-API call to R: ‘Rf_allocSExp’
+#>   
+#>   Compiled code should not call non-API entry points in R.
+#>   
+#>   See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual,
+#>   and section ‘Moving into C API compliance’ for issues with the use of
+#>   non-API entry points.
+#> 
+#> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 #> 
 #> $`r-devel-linux-x86_64-debian-gcc`
-#> ── R CMD check results ─────────────────────────────────────── igraph 1.4.1 ────
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
 #> Duration: 0ms
 #> 
-#> 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
+#> ❯ checking compiled code ... NOTE
+#>   File ‘igraph/libs/igraph.so’:
+#>     Found non-API call to R: ‘Rf_allocSExp’
+#>   
+#>   Compiled code should not call non-API entry points in R.
+#>   
+#>   See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual,
+#>   and section ‘Moving into C API compliance’ for issues with the use of
+#>   non-API entry points.
+#> 
+#> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 #> 
 #> $`r-devel-linux-x86_64-fedora-clang`
-#> ── R CMD check results ─────────────────────────────────────── igraph 1.4.1 ────
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
 #> Duration: 0ms
 #> 
-#> ❯ checking installed package size ... NOTE
-#>     installed size is  7.2Mb
-#>     sub-directories of 1Mb or more:
-#>       R      1.4Mb
-#>       help   1.4Mb
-#>       libs   3.3Mb
+#> ❯ checking compiled code ... NOTE
+#>   File ‘igraph/libs/igraph.so’:
+#>     Found non-API call to R: ‘Rf_allocSExp’
+#>   
+#>   Compiled code should not call non-API entry points in R.
+#>   
+#>   See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual,
+#>   and section ‘Moving into C API compliance’ for issues with the use of
+#>   non-API entry points.
 #> 
 #> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 #> 
 #> $`r-devel-linux-x86_64-fedora-gcc`
-#> ── R CMD check results ─────────────────────────────────────── igraph 1.4.1 ────
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
 #> Duration: 0ms
 #> 
-#> 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
+#> ❯ checking compiled code ... NOTE
+#>   File ‘igraph/libs/igraph.so’:
+#>     Found non-API call to R: ‘Rf_allocSExp’
+#>   
+#>   Compiled code should not call non-API entry points in R.
+#>   
+#>   See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual,
+#>   and section ‘Moving into C API compliance’ for issues with the use of
+#>   non-API entry points.
+#> 
+#> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
+#> 
+#> $`r-devel-windows-x86_64`
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
+#> Duration: 0ms
+#> 
+#> ❯ checking compiled code ... NOTE
+#>   File 'igraph/libs/x64/igraph.dll':
+#>     Found non-API call to R: 'Rf_allocSExp'
+#>   
+#>   Compiled code should not call non-API entry points in R.
+#>   
+#>   See 'Writing portable packages' in the 'Writing R Extensions' manual,
+#>   and section 'Moving into C API compliance' for issues with the use of
+#>   non-API entry points.
+#> 
+#> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 #> 
 #> $`r-patched-linux-x86_64`
-#> ── R CMD check results ─────────────────────────────────────── igraph 1.4.1 ────
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
 #> Duration: 0ms
 #> 
-#> 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
+#> ❯ checking compiled code ... NOTE
+#>   File ‘igraph/libs/igraph.so’:
+#>     Found non-API call to R: ‘Rf_allocSExp’
+#>   
+#>   Compiled code should not call non-API entry points in R.
+#>   
+#>   See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual,
+#>   and section ‘Moving into C API compliance’ for issues with the use of
+#>   non-API entry points.
+#> 
+#> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 #> 
 #> $`r-release-linux-x86_64`
-#> ── R CMD check results ─────────────────────────────────────── igraph 1.4.1 ────
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
 #> Duration: 0ms
 #> 
-#> 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
+#> ❯ checking compiled code ... NOTE
+#>   File ‘igraph/libs/igraph.so’:
+#>     Found non-API call to R: ‘Rf_allocSExp’
+#>   
+#>   Compiled code should not call non-API entry points in R.
+#>   
+#>   See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual,
+#>   and section ‘Moving into C API compliance’ for issues with the use of
+#>   non-API entry points.
+#> 
+#> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 #> 
 #> $`r-release-macos-arm64`
-#> ── R CMD check results ─────────────────────────────────────── igraph 1.4.1 ────
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
 #> Duration: 0ms
 #> 
-#> ❯ checking installed package size ... NOTE
-#>     installed size is 19.9Mb
-#>     sub-directories of 1Mb or more:
-#>       R      2.1Mb
-#>       help   1.4Mb
-#>       libs  15.4Mb
+#> ❯ checking compiled code ... NOTE
+#>   File ‘igraph/libs/igraph.so’:
+#>     Found non-API call to R: ‘Rf_allocSExp’
+#>   
+#>   Compiled code should not call non-API entry points in R.
+#>   
+#>   See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual,
+#>   and section ‘Moving into C API compliance’ for issues with the use of
+#>   non-API entry points.
 #> 
 #> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 #> 
 #> $`r-release-macos-x86_64`
-#> ── R CMD check results ─────────────────────────────────────── igraph 1.4.1 ────
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
 #> Duration: 0ms
 #> 
-#> ❯ checking installed package size ... NOTE
-#>     installed size is 18.5Mb
-#>     sub-directories of 1Mb or more:
-#>       R      1.4Mb
-#>       help   1.4Mb
-#>       libs  14.6Mb
+#> ❯ checking compiled code ... NOTE
+#>   File ‘igraph/libs/igraph.so’:
+#>     Found non-API call to R: ‘Rf_allocSExp’
+#>   
+#>   Compiled code should not call non-API entry points in R.
+#>   
+#>   See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual,
+#>   and section ‘Moving into C API compliance’ for issues with the use of
+#>   non-API entry points.
 #> 
 #> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 #> 
 #> $`r-release-windows-x86_64`
-#> ── R CMD check results ─────────────────────────────────────── igraph 1.4.1 ────
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
 #> Duration: 0ms
 #> 
-#> ❯ checking installed package size ... NOTE
-#>     installed size is 10.3Mb
-#>     sub-directories of 1Mb or more:
-#>       R      1.4Mb
-#>       help   1.4Mb
-#>       libs   6.4Mb
+#> ❯ checking compiled code ... NOTE
+#>   File 'igraph/libs/x64/igraph.dll':
+#>     Found non-API call to R: 'Rf_allocSExp'
+#>   
+#>   Compiled code should not call non-API entry points in R.
+#>   
+#>   See 'Writing portable packages' in the 'Writing R Extensions' manual,
+#>   and section 'Moving into C API compliance' for issues with the use of
+#>   non-API entry points.
 #> 
 #> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 #> 
 #> $`r-oldrel-macos-arm64`
-#> ── R CMD check results ─────────────────────────────────────── igraph 1.4.1 ────
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
 #> Duration: 0ms
 #> 
 #> ❯ checking installed package size ... NOTE
-#>     installed size is 19.9Mb
+#>     installed size is 23.8Mb
 #>     sub-directories of 1Mb or more:
-#>       R      2.0Mb
-#>       help   1.4Mb
-#>       libs  15.4Mb
+#>       R      2.1Mb
+#>       doc    1.2Mb
+#>       help   2.9Mb
+#>       libs  17.1Mb
 #> 
 #> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 #> 
 #> $`r-oldrel-macos-x86_64`
-#> ── R CMD check results ─────────────────────────────────────── igraph 1.4.1 ────
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
 #> Duration: 0ms
 #> 
 #> ❯ checking installed package size ... NOTE
-#>     installed size is 18.5Mb
+#>     installed size is 23.6Mb
 #>     sub-directories of 1Mb or more:
-#>       R      1.4Mb
-#>       help   1.4Mb
-#>       libs  14.6Mb
+#>       R      1.3Mb
+#>       doc    1.2Mb
+#>       help   2.0Mb
+#>       libs  18.7Mb
 #> 
 #> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 #> 
-#> $`r-oldrel-windows-ix86+x86_64`
-#> ── R CMD check results ─────────────────────────────────────── igraph 1.4.1 ────
+#> $`r-oldrel-windows-x86_64`
+#> ── R CMD check results ─────────────────────────────────────── igraph 2.1.4 ────
 #> Duration: 0ms
 #> 
 #> ❯ checking installed package size ... NOTE
-#>     installed size is 17.2Mb
+#>     installed size is 10.7Mb
 #>     sub-directories of 1Mb or more:
-#>       R      1.4Mb
-#>       help   1.4Mb
-#>       libs  13.4Mb
+#>       R      1.3Mb
+#>       doc    1.2Mb
+#>       help   2.1Mb
+#>       libs   5.7Mb
 #> 
 #> 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 #> 
@@ -282,14 +363,14 @@ manipulate the check processes.
 ``` r
 chkpx <- rcmdcheck_process$new()
 chkpx
-#> PROCESS 'R', running, pid 50434.
+#> PROCESS 'R', running, pid 74156.
 ```
 
 ``` r
 chkpx$wait()
 chkpx$parse_results()
 #> ── R CMD check results ─────────────────────────────── rcmdcheck 1.4.0.9000 ────
-#> Duration: 18.6s
+#> Duration: 19.5s
 #> 
 #> 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 ```
