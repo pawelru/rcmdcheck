@@ -20,8 +20,8 @@
       rcmdcheck(test_path("bad1"), build_args = "-v")
     Output
       -- R CMD build -----------------------------------------------------------------
-      R add-on package builder: 4.5.0 (r88135)
-      Copyright (C) 1997-2025 The R Core Team.
+      R add-on package builder: <rvesion> (r<commit>)
+      Copyright (C) 1997-<year> The R Core Team.
       This is free software; see the GNU General Public License version 2
       or later for copying conditions.  There is NO warranty.
     Condition

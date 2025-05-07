@@ -168,7 +168,16 @@ test_that("build arguments", {
 
   expect_snapshot(
     error = TRUE,
-    rcmdcheck(test_path("bad1"), build_args = "-v")
+    rcmdcheck(test_path("bad1"), build_args = "-v"),
+    transform = function(x) {
+      x <- sub(
+        "package builder: [.0-9]+ [(]r[0-9]+[)]",
+        "package builder: <rvesion> (r<commit>)",
+        x
+      )
+      x <- sub("[(]C[)] 1997-[0-9]+ ", "(C) 1997-<year> ", x)
+      x
+    }
   )
 })
 
