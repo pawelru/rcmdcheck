@@ -1,4 +1,3 @@
-
 if (!isTRUE(as.logical(Sys.getenv("RCMDCHECK_EXTRA_TESTS")))) return()
 
 test_that("check process crashes", {
@@ -21,7 +20,8 @@ test_that("check process crashes", {
   on.exit(unlink(c(pidfile, dbgfile)), add = TRUE)
   code <- sprintf(
     "if (! file.exists('%s')) cat(Sys.getpid(), '\\n', file = '%s')\n",
-    encodeString(pidfile), encodeString(pidfile)
+    encodeString(pidfile),
+    encodeString(pidfile)
   )
   cat(code, file = dbgfile)
 
@@ -33,7 +33,7 @@ test_that("check process crashes", {
 
   # Wait until the check is running
   limit <- Sys.time() + as.difftime(10, units = "secs")
-  while (! file.exists(pidfile)  && Sys.time() < limit) Sys.sleep(0.1)
+  while (!file.exists(pidfile) && Sys.time() < limit) Sys.sleep(0.1)
   expect_true(Sys.time() < limit)
   if (!file.exists(pidfile)) return()
 
@@ -42,7 +42,7 @@ test_that("check process crashes", {
     tryCatch(as.integer(readLines(pidfile)), error = function(e) NULL)
   }
   limit <- Sys.time() + as.difftime(1, units = "secs")
-  while(!is.integer(pid <- get_pid()) && Sys.time() < limit) Sys.sleep(0.1)
+  while (!is.integer(pid <- get_pid()) && Sys.time() < limit) Sys.sleep(0.1)
   expect_true(Sys.time() < limit)
   if (is.null(pid)) return()
 

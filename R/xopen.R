@@ -1,9 +1,8 @@
-
 #' Open the check directory in a file browser window
 #'
 #' @param target `rcmdcheck()` result.
 #' @inheritParams xopen::xopen
-#' 
+#'
 #' @export
 #' @importFrom xopen xopen
 

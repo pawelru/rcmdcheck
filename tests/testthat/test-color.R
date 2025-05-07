@@ -1,4 +1,3 @@
-
 test_that("colors can be turned on and off", {
   # clean up state
   withr::local_options(rcmdcheck.num_colors = NULL)

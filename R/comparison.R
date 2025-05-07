@@ -8,7 +8,7 @@ rcmdcheck_comparison <- function(old, new) {
 
   # For each problem, determine whether it's new (1), fixed (-1), or
   # unchanged (0/0.5).
-  new_df$change <- ifelse(new_df$hash %in% old_df$hash, 0,    1)
+  new_df$change <- ifelse(new_df$hash %in% old_df$hash, 0, 1)
   old_df$change <- ifelse(old_df$hash %in% new_df$hash, 0.5, -1)
   cmp_df <- rbind(old_df, new_df)
 
@@ -21,7 +21,7 @@ rcmdcheck_comparison <- function(old, new) {
   } else if (inst_fail_new) {
     ## install still fails
     status <- "i+"
-  } else if (new$timeout && ! any(old_df$timeout)) {
+  } else if (new$timeout && !any(old_df$timeout)) {
     ## install/check newly timeouts
     status <- "t-"
   } else if (new$timeout) {
@@ -75,7 +75,8 @@ print.rcmdcheck_comparison <- function(x, header = TRUE, ...) {
     )
   }
 
-  status <- switch(x$status,
+  status <- switch(
+    x$status,
     "+" = green("OK"),
     "-" = red("BROKEN"),
     "i-" = red("INSTALL FAILURE"),

@@ -1,4 +1,3 @@
-
 test_that("input targz and targz to check can be the same", {
   f1 <- tempfile()
   on.exit(unlink(f1), add = TRUE)
@@ -9,7 +8,6 @@ test_that("input targz and targz to check can be the same", {
 })
 
 test_that("different packages in the same dir are fine", {
-
   dir.create(tmp <- tempfile())
   on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
 

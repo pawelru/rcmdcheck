@@ -1,4 +1,3 @@
-
 # these are set by devtools, and probably by --as-cran as well,
 # so we unset them here
 
@@ -9,7 +8,6 @@ withr::local_envvar(
 )
 
 test_that("rcmdcheck works", {
-
   skip_on_cran()
   Sys.unsetenv("R_TESTS")
 
@@ -23,15 +21,15 @@ test_that("rcmdcheck works", {
   tmp_out2 <- tempfile(fileext = ".rda")
   Sys.setenv(RCMDCHECK_OUTPUT = tmp_out1)
   Sys.setenv(RCMDBUILD_OUTPUT = tmp_out2)
-  on.exit(unlink(c(tmp_lib, tmp_out1, tmp_out2), recursive = TRUE),
-          add = TRUE)
+  on.exit(unlink(c(tmp_lib, tmp_out1, tmp_out2), recursive = TRUE), add = TRUE)
   on.exit(Sys.unsetenv("RCMDCHECK_OUTPUT"), add = TRUE)
   on.exit(Sys.unsetenv("RCMDBUILD_OUTPUT"), add = TRUE)
 
   bad1 <- rcmdcheck(
     test_path("bad1"),
     quiet = TRUE,
-    libpath = c(tmp_lib, .libPaths()))
+    libpath = c(tmp_lib, .libPaths())
+  )
 
   expect_match(bad1$warnings[1], "Non-standard license specification")
 
@@ -78,7 +76,6 @@ test_that("rcmdcheck works", {
 })
 
 test_that("background gives same results", {
-
   skip_on_cran()
   Sys.unsetenv("R_TESTS")
 
@@ -92,14 +89,14 @@ test_that("background gives same results", {
   tmp_out2 <- tempfile(fileext = ".rda")
   Sys.setenv(RCMDCHECK_OUTPUT = tmp_out1)
   Sys.setenv(RCMDBUILD_OUTPUT = tmp_out2)
-  on.exit(unlink(c(tmp_lib, tmp_out1, tmp_out2), recursive = TRUE),
-          add = TRUE)
+  on.exit(unlink(c(tmp_lib, tmp_out1, tmp_out2), recursive = TRUE), add = TRUE)
   on.exit(Sys.unsetenv("RCMDCHECK_OUTPUT"), add = TRUE)
   on.exit(Sys.unsetenv("RCMDBUILD_OUTPUT"), add = TRUE)
 
   bad1 <- rcmdcheck_process$new(
-     test_path("bad1"),
-     libpath = c(tmp_lib, .libPaths()))
+    test_path("bad1"),
+    libpath = c(tmp_lib, .libPaths())
+  )
   # If we read out the output, it'll still save it internally
   bad1$read_output()
   bad1$read_all_output_lines()
@@ -127,7 +124,6 @@ test_that("background gives same results", {
 })
 
 test_that("Installation errors", {
-
   skip_on_cran()
   bad2 <- rcmdcheck(test_path("bad2"), quiet = TRUE)
   expect_match(bad2$errors[1], "Installation failed")
@@ -146,7 +142,6 @@ test_that("Installation errors", {
 })
 
 test_that("non-quiet mode works", {
-
   skip_on_cran()
   Sys.unsetenv("R_TESTS")
 
@@ -167,7 +162,6 @@ test_that("non-quiet mode works", {
 })
 
 test_that("build arguments", {
-
   skip_on_cran()
   tmp <- tempfile()
   on.exit(unlink(tmp), add = TRUE)
@@ -181,7 +175,6 @@ test_that("build arguments", {
 })
 
 test_that("check arguments", {
-
   skip_on_cran()
   tmp <- tempfile()
   on.exit(unlink(tmp), add = TRUE)
@@ -195,14 +188,16 @@ test_that("check arguments", {
 
 test_that("check_dir argument", {
   wd <- NULL
-  local_mocked_bindings(do_check =  function(...) {
+  local_mocked_bindings(do_check = function(...) {
     wd <<- getwd()
     stop("enough")
   })
   tmp <- tempfile(pattern = "foo bar")
   on.exit(unlink(tmp))
-  expect_error(rcmdcheck(test_path("fixtures/badpackage_1.0.0.tar.gz"),
-                         check_dir = tmp))
+  expect_error(rcmdcheck(
+    test_path("fixtures/badpackage_1.0.0.tar.gz"),
+    check_dir = tmp
+  ))
 
   expect_true(file.exists(tmp))
   expect_equal(normalizePath(wd), normalizePath(tmp))
@@ -212,8 +207,10 @@ test_that("check_dir and rcmdcheck_process", {
   skip_on_cran()
   tmp <- tempfile(pattern = "foo bar")
   on.exit(unlink(tmp))
-  px <- rcmdcheck_process$new(test_path("fixtures/badpackage_1.0.0.tar.gz"),
-                              check_dir = tmp)
+  px <- rcmdcheck_process$new(
+    test_path("fixtures/badpackage_1.0.0.tar.gz"),
+    check_dir = tmp
+  )
   on.exit(px$kill(), add = TRUE)
   expect_true(file.exists(tmp))
   expect_true("badpackage_1.0.0.tar.gz" %in% dir(tmp))

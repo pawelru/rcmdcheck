@@ -1,4 +1,3 @@
-
 test_that("set_env", {
   called <- FALSE
   local_mocked_bindings(ignore_env = function(...) called <<- TRUE)

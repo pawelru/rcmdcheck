@@ -1,4 +1,3 @@
-
 #' Download and show all CRAN check flavour platforms
 #'
 #' If the `package` argument is `NULL`, then all current
@@ -17,7 +16,6 @@
 #' }
 
 cran_check_flavours <- function(package = NULL) {
-
   if (is.null(package)) return(cran_check_flavours_generic())
 
   base <- Sys.getenv(
@@ -31,7 +29,8 @@ cran_check_flavours <- function(package = NULL) {
   fl_rows <- grep(
     "<tr> <td>  <a href=\"check_flavors.html#",
     html,
-    fixed = TRUE, value = TRUE
+    fixed = TRUE,
+    value = TRUE
   )
 
   sub(
@@ -73,10 +72,11 @@ cran_check_flavours_generic <- function() {
 #'
 #' @export
 
-cran_check_results <- function(package,
-                               flavours = cran_check_flavours(package),
-                               quiet = FALSE) {
-
+cran_check_results <- function(
+  package,
+  flavours = cran_check_flavours(package),
+  quiet = FALSE
+) {
   stopifnot(is_string(package))
 
   base <- Sys.getenv(

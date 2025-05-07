@@ -1,4 +1,3 @@
-
 test_that("can parse basic package information from file", {
   skip_on_cran()
   outfile <- "bikedata-ok.log"

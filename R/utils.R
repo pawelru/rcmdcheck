@@ -1,4 +1,3 @@
-
 read_char <- function(path, encoding = "", ...) {
   txt <- readChar(path, nchars = file.info(path)$size, useBytes = TRUE, ...)
   iconv(txt, encoding, "UTF-8", sub = "byte")
@@ -17,7 +16,7 @@ is_count <- function(x) {
 }
 
 `%notin%` <- function(needle, haystack) {
-  ! (needle %in% haystack)
+  !(needle %in% haystack)
 }
 
 `%||%` <- function(l, r) if (is.null(l)) r else l
@@ -67,15 +66,12 @@ data_frame <- function(..., stringsAsFactors = FALSE) {
 #' @keywords internal
 
 myrep <- function(x, len) {
-
   stopifnot(len == 0 || NROW(x) == len || NROW(x) == 1)
 
   if (NROW(x) == len) {
     x
-
   } else if (is.data.frame(x)) {
-    x[ rep(1, len), ]
-
+    x[rep(1, len), ]
   } else {
     rep(x, length.out = len)
   }
@@ -109,23 +105,24 @@ get_install_out <- function(path, encoding = "") {
   }
 }
 
-col_align <- function(text, width = cli::console_width(),
-                      align = c("left", "center", "right")) {
-
+col_align <- function(
+  text,
+  width = cli::console_width(),
+  align = c("left", "center", "right")
+) {
   align <- match.arg(align)
   nc <- cli::ansi_nchar(text, type = "width")
 
   if (width <= nc) {
     text
-
   } else if (align == "left") {
     paste0(text, make_space(width - nc))
-
   } else if (align == "center") {
-    paste0(make_space(ceiling((width - nc) / 2)),
-           text,
-           make_space(floor((width - nc) / 2)))
-
+    paste0(
+      make_space(ceiling((width - nc) / 2)),
+      text,
+      make_space(floor((width - nc) / 2))
+    )
   } else {
     paste0(make_space(width - nc), text)
   }
@@ -140,7 +137,9 @@ strrep <- function(x, times) {
       if (times <= 0L) return("")
       paste0(replicate(times, x), collapse = "")
     },
-    list(x = x, times = times), MoreArgs = list())
+    list(x = x, times = times),
+    MoreArgs = list()
+  )
   unlist(r, use.names = FALSE)
 }
 
@@ -165,8 +164,8 @@ as_integer <- function(x) {
   suppressWarnings(as.integer(x))
 }
 
-YES_WORDS <- c("true",  "yes", "on",  "1", "yep",  "yeah")
-NO_WORDS  <- c("false", "no",  "off", "0", "nope", "nah")
+YES_WORDS <- c("true", "yes", "on", "1", "yep", "yeah")
+NO_WORDS <- c("false", "no", "off", "0", "nope", "nah")
 
 as_flag <- function(x, default = FALSE, name = "") {
   x1 <- trimws(tolower(x))
@@ -193,10 +192,8 @@ should_use_rs_pandoc <- function() {
 
   if (tolower(ev) == "true") {
     TRUE
-
   } else if (tolower(ev) == "false") {
     FALSE
-
   } else {
     !nzchar(Sys.which("pandoc")) && nzchar(Sys.getenv("RSTUDIO_PANDOC"))
   }
