@@ -33,12 +33,7 @@ cran_check_flavours <- function(package = NULL) {
     value = TRUE
   )
 
-  sub(
-    "^<tr> <td>  <a href=\"check_flavors.html#[^\"]*\">\\s*([^\\s<]+)\\s*</a>.*$",
-    "\\1",
-    fl_rows,
-    perl = TRUE
-  )
+  trimws(sub("^.*<span[^>]+>([^<]+)</span>.*$", "\\1", fl_rows))
 }
 
 cran_check_flavours_generic <- function() {
@@ -89,9 +84,16 @@ cran_check_results <- function(
   download_files(urls, tmp, quiet = quiet)
 
   structure(
-    lapply(tmp, parse_check),
+    lapply(tmp, parse_check_or_null),
     names = flavours,
     package = package,
     class = "rmcdcheck_cran_results"
+  )
+}
+
+parse_check_or_null <- function(x, ...) {
+  tryCatch(
+    parse_check(x, ...),
+    error = function(e) NULL
   )
 }
