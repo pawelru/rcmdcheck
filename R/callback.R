@@ -1,4 +1,3 @@
-
 ## This is the callback called for each line of the output
 ## We color it a bit, OK is green, NOTE is blue
 ## WARNING is magenta, ERROR is red.
@@ -8,10 +7,10 @@
 #' @importFrom prettyunits pretty_dt
 
 block_callback <- function(
-    top_line = TRUE,
-    sys_time = NULL,
-    as_cran = NA) {
-
+  top_line = TRUE,
+  sys_time = NULL,
+  as_cran = NA
+) {
   sys_time <- sys_time %||% Sys.time
   partial_line <- ""
 
@@ -49,7 +48,6 @@ block_callback <- function(
   }
 
   do_line <- function(x) {
-
     should_time <<- FALSE
     now <<- sys_time()
 

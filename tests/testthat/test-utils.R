@@ -1,4 +1,3 @@
-
 test_that("as_flag", {
   expect_true(as_flag("true"))
   expect_true(as_flag("TRUE"))

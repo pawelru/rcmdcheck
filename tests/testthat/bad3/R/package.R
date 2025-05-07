@@ -1,4 +1,3 @@
-
 foobar <- function(argument) {
   argument
 }

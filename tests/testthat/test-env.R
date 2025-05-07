@@ -1,4 +1,3 @@
-
 test_that("set_env", {
   called <- FALSE
   local_mocked_bindings(ignore_env = function(...) called <<- TRUE)
@@ -98,7 +97,7 @@ test_that("load_env_file error", {
     load_env_file(envfile)
   }
 
-  expect_error(do(), "Cannot parse check.env")
+  expect_snapshot(error = TRUE, do())
 
   expect_equal(Sys.getenv("foo"), "notbar")
   expect_equal(Sys.getenv("bar", ""), "")

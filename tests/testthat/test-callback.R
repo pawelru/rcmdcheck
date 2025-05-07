@@ -1,5 +1,4 @@
-
- test_that("block_callback by line", {
+test_that("block_callback by line", {
   withr::local_options(rcmdcheck.timestamp_limit = 1000)
   chk <- readLines(test_path("fixtures", "test-error.txt"))
   cb <- block_callback()
@@ -16,13 +15,30 @@ test_that("block_callback by chunks", {
   # We don't make this random, so the partial lines are always the same
   # and the snapshot does not change
   pszs <- c(
-    1694L, 1751L, 1886L, 1986L, 2476L, 2529L, 2772L, 2832L, 3036L,
-    3165L, 3202L, 3389L, 3616L, 3867L, 4304L, 4491L, 4789L, 4818L,
-    4993L, 5331L
+    1694L,
+    1751L,
+    1886L,
+    1986L,
+    2476L,
+    2529L,
+    2772L,
+    2832L,
+    3036L,
+    3165L,
+    3202L,
+    3389L,
+    3616L,
+    3867L,
+    4304L,
+    4491L,
+    4789L,
+    4818L,
+    4993L,
+    5331L
   )
   szs <- c(1, pszs, nchar(chk) + 1L)
   chunks <- lapply(seq_along(szs)[-1], function(i) {
-    substr(chk, szs[i-1], szs[i] - 1L)
+    substr(chk, szs[i - 1], szs[i] - 1L)
   })
 
   cb <- block_callback()
@@ -35,7 +51,7 @@ test_that("block_callback shows running time", {
   cb <- block_callback()
   out <- capture.output({
     cb("* Doing something")
-    Sys.sleep(1/2)
+    Sys.sleep(1 / 2)
     cb(" ... OK\n")
   })
   expect_match(out[1], "Doing something [(][0-9]+m?s[)]$")

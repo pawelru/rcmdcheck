@@ -1,14 +1,14 @@
-
 #' @importFrom curl new_pool new_handle handle_setopt multi_add multi_run
 #' @importFrom cli cli_progress_bar cli_progress_update
 
-download_files <- function(urls,
-                           destfiles,
-                           quiet = FALSE,
-                           total_con = 100L,
-                           host_con = 15L,
-                           handles = NULL) {
-
+download_files <- function(
+  urls,
+  destfiles,
+  quiet = FALSE,
+  total_con = 100L,
+  host_con = 15L,
+  handles = NULL
+) {
   stopifnot(
     is.character(urls) && !anyNA(urls),
     is.character(destfiles) & !anyNA(destfiles),
@@ -79,11 +79,10 @@ download_files <- function(urls,
     )
   })
 
-
   if (getRversion() < "3.6.0") suspendInterrupts <- identity
 
   repeat {
-    if (todo == 0) break;
+    if (todo == 0) break
     suspendInterrupts(
       multi_run(0.1, poll = TRUE, pool = pool)
     )
@@ -134,12 +133,18 @@ http_error <- function(resp, call = sys.call(-1)) {
   reason <- http_status(status)$reason
   message <- sprintf("%s (HTTP %d).", reason, status)
   status_type <- (status %/% 100) * 100
-  if (length(resp[["content"]]) == 0 && !is.null(resp$file) &&
-              file.exists(resp$file)) {
-    tryCatch({
-      n <- file.info(resp$file, extra_cols = FALSE)$size
-      resp$content <- readBin(resp$file, what = raw(), n = n)
-    }, error = identity)
+  if (
+    length(resp[["content"]]) == 0 &&
+      !is.null(resp$file) &&
+      file.exists(resp$file)
+  ) {
+    tryCatch(
+      {
+        n <- file.info(resp$file, extra_cols = FALSE)$size
+        resp$content <- readBin(resp$file, what = raw(), n = n)
+      },
+      error = identity
+    )
   }
   http_class <- paste0("http_", unique(c(status, status_type, "error")))
   structure(
@@ -154,8 +159,13 @@ http_status <- function(status) {
     stop("Unknown http status code: ", status, call. = FALSE)
   }
 
-  status_types <- c("Information", "Success", "Redirection", "Client error",
-    "Server error")
+  status_types <- c(
+    "Information",
+    "Success",
+    "Redirection",
+    "Client error",
+    "Server error"
+  )
   status_type <- status_types[[status %/% 100]]
 
   # create the final information message

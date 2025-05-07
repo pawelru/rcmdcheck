@@ -1,4 +1,3 @@
-
 #' Compare a set of check results to another check result
 #'
 #' @param old A check result, or a list of check results.
@@ -9,8 +8,8 @@
 #'   * `status`: comparison status, see below,
 #'   * `old`: list of `rcmdcheck` objects the old check(s),
 #'   * `new`: `rcmdcheck` object, the new check,
-#'   * `cmp`: 
-#' 
+#'   * `cmp`:
+#'
 #'
 #' @family check comparisons
 #' @export
@@ -36,10 +35,11 @@ compare_check_files <- function(old, new) {
 #' @family check comparisons
 #' @export
 
-compare_to_cran <- function(check,
-                            flavours = cran_check_flavours(check$package)) {
+compare_to_cran <- function(
+  check,
+  flavours = cran_check_flavours(check$package)
+) {
   pkg <- check$package
   cran <- cran_check_results(pkg, flavours = flavours)
   compare_checks(old = cran, new = check)
 }
-

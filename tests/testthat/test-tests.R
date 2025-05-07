@@ -1,6 +1,4 @@
-
 test_that("parsing tests for multiple architectures", {
-
   tgz <- test_path("fixtures", "bad-tests.tar.gz")
   dir.create(tmp <- tempfile())
   on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
