@@ -1,9 +1,9 @@
 Run R CMD check from R and Capture Results
 ================
 
-- [rcmdcheck](#rcmdcheck)
-  - [Installation](#installation)
-  - [Usage](#usage)
+-   [rcmdcheck](#rcmdcheck)
+    -   [Installation](#installation)
+    -   [Usage](#usage)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -65,7 +65,7 @@ library(rcmdcheck)
 chk <- rcmdcheck("tests/testthat/bad1", quiet = TRUE)
 chk
 #> ── R CMD check results ─────────────────────────────────── badpackage 1.0.0 ────
-#> Duration: 9.7s
+#> Duration: 12.2s
 #> 
 #> ❯ checking DESCRIPTION meta-information ... WARNING
 #>   Non-standard license specification:
@@ -85,22 +85,22 @@ names(check_details(chk))
 #> [11] "cran"         "bioc"
 ```
 
-- `package`: Package name.
-- `version`: Package version number.
-- `notes`: Character vector of check `NOTE`s.
-- `warnings`: Character vector of check `WARNING`s.
-- `errors`: Character vector of check `ERROR`s.
-- `platform`: Platform, e.g. `x86_64-apple-darwin15.6.0`.
-- `checkdir`: Check directory.
-- `install_out`: Output of the package installation.
-- `description`: The text of the `DESCRIPTION` file.
-- `session_info`: A `sessioninfo::session_info` object, session
-  information from within the check process.
-- `cran`: Flag, whether this is a CRAN package. (Based on the
-  `Repository` field in `DESCRIPTION`, which is typically only set for
-  published CRAN packages.)
-- `bioc`: Flag, whether this is a Bioconductor package, based on the
-  presence of the `biocViews` field in `DESCRIPTION`.
+-   `package`: Package name.
+-   `version`: Package version number.
+-   `notes`: Character vector of check `NOTE`s.
+-   `warnings`: Character vector of check `WARNING`s.
+-   `errors`: Character vector of check `ERROR`s.
+-   `platform`: Platform, e.g. `x86_64-apple-darwin15.6.0`.
+-   `checkdir`: Check directory.
+-   `install_out`: Output of the package installation.
+-   `description`: The text of the `DESCRIPTION` file.
+-   `session_info`: A `sessioninfo::session_info` object, session
+    information from within the check process.
+-   `cran`: Flag, whether this is a CRAN package. (Based on the
+    `Repository` field in `DESCRIPTION`, which is typically only set for
+    published CRAN packages.)
+-   `bioc`: Flag, whether this is a Bioconductor package, based on the
+    presence of the `biocViews` field in `DESCRIPTION`.
 
 Note that if the check results were parsed from a file, some of these
 fields might be missing (`NULL`), as we don’t have access to the
@@ -125,7 +125,7 @@ cran_check_flavours()
 #>  [7] "r-release-linux-x86_64"            "r-release-macos-arm64"            
 #>  [9] "r-release-macos-x86_64"            "r-release-windows-x86_64"         
 #> [11] "r-oldrel-macos-arm64"              "r-oldrel-macos-x86_64"            
-#> [13] "r-oldrel-windows-ix86+x86_64"
+#> [13] "r-oldrel-windows-x86_64"
 ```
 
 `cran_check_results()` loads and parses all check results for a package.
@@ -282,14 +282,14 @@ manipulate the check processes.
 ``` r
 chkpx <- rcmdcheck_process$new()
 chkpx
-#> PROCESS 'R', running, pid 25919.
+#> PROCESS 'R', running, pid 50434.
 ```
 
 ``` r
 chkpx$wait()
 chkpx$parse_results()
 #> ── R CMD check results ─────────────────────────────── rcmdcheck 1.4.0.9000 ────
-#> Duration: 16.8s
+#> Duration: 18.6s
 #> 
 #> 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 ```
