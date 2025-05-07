@@ -27,10 +27,7 @@ test_that("different packages in the same dir are fine", {
 
 test_that("protection against ~ deletion", {
   local_mocked_bindings(dir = function(...) c("foo", "~", "bar"))
-  expect_error(
-    check_for_tilde_file(tempfile()),
-    "delete your entire home directory"
-  )
+  expect_snapshot(error = TRUE, check_for_tilde_file(tempfile()))
 })
 
 test_that("inst/doc can be kept", {

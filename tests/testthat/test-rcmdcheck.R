@@ -101,8 +101,8 @@ test_that("background gives same results", {
   bad1$read_output()
   bad1$read_all_output_lines()
   # No separate stderr by default
-  expect_error(bad1$read_error())
-  expect_error(bad1$read_all_error_lines())
+  expect_snapshot(error = TRUE, bad1$read_error())
+  expect_snapshot(error = TRUE, bad1$read_all_error_lines())
   res <- bad1$parse_results()
 
   expect_match(res$warnings[1], "Non-standard license specification")
@@ -166,12 +166,10 @@ test_that("build arguments", {
   tmp <- tempfile()
   on.exit(unlink(tmp), add = TRUE)
 
-  out <- capture_output(
-    o1 <- expect_error(
-      rcmdcheck(test_path("bad1"), build_args = "-v")
-    )
+  expect_snapshot(
+    error = TRUE,
+    rcmdcheck(test_path("bad1"), build_args = "-v")
   )
-  expect_match(out, "R add-on package builder")
 })
 
 test_that("check arguments", {
@@ -194,10 +192,12 @@ test_that("check_dir argument", {
   })
   tmp <- tempfile(pattern = "foo bar")
   on.exit(unlink(tmp))
-  expect_error(rcmdcheck(
-    test_path("fixtures/badpackage_1.0.0.tar.gz"),
-    check_dir = tmp
-  ))
+  expect_snapshot(error = TRUE, {
+    rcmdcheck(
+      test_path("fixtures/badpackage_1.0.0.tar.gz"),
+      check_dir = tmp
+    )
+  })
 
   expect_true(file.exists(tmp))
   expect_equal(normalizePath(wd), normalizePath(tmp))

@@ -60,8 +60,5 @@ test_that("check process crashes", {
   }
 
   # Result of rcmdcheck()
-  expect_error(
-    res <- proc$get_result(),
-    "R CMD check process failed"
-  )
+  expect_snapshot(error = TRUE, proc$get_result())
 })
