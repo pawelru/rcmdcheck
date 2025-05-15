@@ -1,4 +1,3 @@
-
 ## This is the callback called for each line of the output
 ## We color it a bit, OK is green, NOTE is blue
 ## WARNING is magenta, ERROR is red.
@@ -8,10 +7,10 @@
 #' @importFrom prettyunits pretty_dt
 
 block_callback <- function(
-    top_line = TRUE,
-    sys_time = NULL,
-    as_cran = NA) {
-
+  top_line = TRUE,
+  sys_time = NULL,
+  as_cran = NA
+) {
   sys_time <- sys_time %||% Sys.time
   partial_line <- ""
 
@@ -21,6 +20,13 @@ block_callback <- function(
   line_started <- sys_time()
   now <- NULL
   prev_line <- ""
+
+  # R may print a duration before emitting 'OK' when reporting
+  # elapsed time when running tests; the behavior seems to depend
+  # on whether tests are run with `--as-cran`.
+  #
+  # https://github.com/r-lib/rcmdcheck/issues/205
+  ok_regex <- "^\\s+(\\[.*\\]\\s*)?OK"
 
   no <- function(x, what = "") {
     pattern <- paste0(" \\.\\.\\.[ ]?", what, "$")
@@ -42,7 +48,6 @@ block_callback <- function(
   }
 
   do_line <- function(x) {
-
     should_time <<- FALSE
     now <<- sys_time()
 
@@ -105,7 +110,7 @@ block_callback <- function(
   do_test_mode <- function(x) {
     ## Maybe we just learned the result of the current test file
     if (test_running) {
-      if (grepl("^\\s+OK", x)) {
+      if (grepl(ok_regex, x)) {
         ## Tests are over, success
         state <<- "OK"
         test_running <<- FALSE
@@ -163,7 +168,7 @@ block_callback <- function(
       now <<- sys_time()
       test_running <<- TRUE
       NA_character_
-    } else if (grepl("^\\s+OK", x)) {
+    } else if (grepl(ok_regex, x)) {
       state <<- "OK"
       test_running <<- FALSE
       NA_character_

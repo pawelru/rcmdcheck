@@ -1,7 +1,6 @@
-
 test_that("set_env", {
   called <- FALSE
-  mockery::stub(set_env, "ignore_env", function(...) called <<- TRUE)
+  local_mocked_bindings(ignore_env = function(...) called <<- TRUE)
   withr::local_envvar(RCMDCHECK_LOAD_CHECK_ENV = "false")
 
   desc <- desc::desc("!new")
@@ -37,11 +36,7 @@ test_that("ignore_env", {
 
 test_that("load_env", {
   path_ <- NULL
-  mockery::stub(
-    load_env,
-    "load_env_file",
-    function(path, envir) path_ <<- path
-  )
+  local_mocked_bindings(load_env_file = function(path, envir) path_ <<- path)
 
   withr::local_envvar(RCMDCHECK_LOAD_CHECK_ENV = "false")
   load_env("foo", "bar", "package")
@@ -102,7 +97,7 @@ test_that("load_env_file error", {
     load_env_file(envfile)
   }
 
-  expect_error(do(), "Cannot parse check.env")
+  expect_snapshot(error = TRUE, do())
 
   expect_equal(Sys.getenv("foo"), "notbar")
   expect_equal(Sys.getenv("bar", ""), "")

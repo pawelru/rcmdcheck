@@ -1,4 +1,3 @@
-
 #' Run R CMD check from R and Capture Results
 #'
 #' Run R CMD check from R programmatically, and capture the results of the
@@ -114,20 +113,20 @@ NULL
 #' @importFrom desc desc
 
 rcmdcheck <- function(
-    path = ".",
-    quiet = FALSE,
-    args = character(),
-    build_args = character(),
-    check_dir = NULL,
-    libpath = .libPaths(),
-    repos = getOption("repos"),
-    timeout = Inf,
-    error_on = Sys.getenv(
-      "RCMDCHECK_ERROR_ON",
-      c("never", "error", "warning", "note")[1]
-    ),
-    env = character()) {
-
+  path = ".",
+  quiet = FALSE,
+  args = character(),
+  build_args = character(),
+  check_dir = NULL,
+  libpath = .libPaths(),
+  repos = getOption("repos"),
+  timeout = Inf,
+  error_on = Sys.getenv(
+    "RCMDCHECK_ERROR_ON",
+    c("never", "error", "warning", "note")[1]
+  ),
+  env = character()
+) {
   error_on <- match.arg(error_on, c("never", "error", "warning", "note"))
 
   if (file.info(path)$isdir) {
@@ -148,8 +147,13 @@ rcmdcheck <- function(
 
   pkgbuild::without_cache(pkgbuild::local_build_tools())
 
-  targz <- build_package(path, check_dir, build_args = build_args,
-                         libpath = libpath, quiet = quiet)
+  targz <- build_package(
+    path,
+    check_dir,
+    build_args = build_args,
+    libpath = libpath,
+    quiet = quiet
+  )
 
   start_time <- Sys.time()
   desc <- desc(targz)
@@ -157,7 +161,8 @@ rcmdcheck <- function(
 
   out <- with_dir(
     dirname(targz),
-    do_check(targz,
+    do_check(
+      targz,
       package = desc$get("Package")[[1]],
       args = args,
       libpath = libpath,
@@ -192,9 +197,16 @@ rcmdcheck <- function(
 
 #' @importFrom withr with_envvar
 
-do_check <- function(targz, package, args, libpath, repos,
-                     quiet, timeout, env) {
-
+do_check <- function(
+  targz,
+  package,
+  args,
+  libpath,
+  repos,
+  quiet,
+  timeout,
+  env
+) {
   # if the pkg.Rcheck directory already exists, unlink it
   unlink(paste0(package, ".Rcheck"), recursive = TRUE)
 
@@ -242,7 +254,8 @@ do_check <- function(targz, package, args, libpath, repos,
   if (res$status != 0 && res$status != 1) {
     stop(
       call. = FALSE,
-      "R CMD check process failed with exit status ", res$status,
+      "R CMD check process failed with exit status ",
+      res$status,
       "\n\nStandard output and error:\n",
       res$stdout
     )

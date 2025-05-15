@@ -1,4 +1,3 @@
-
 #' rcmdcheck configuration
 #'
 #' Options take precedence over environment variables. E.g. if both

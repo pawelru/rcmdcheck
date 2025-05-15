@@ -1,4 +1,3 @@
-
 #' Print R CMD check results
 #' @param x Check result object to print.
 #' @param header Whether to print a header.
@@ -10,8 +9,12 @@
 #' @importFrom cli symbol
 #' @importFrom prettyunits pretty_sec
 
-print.rcmdcheck <- function(x, header = TRUE, test_output = getOption("rcmdcheck.test_output", FALSE), ...) {
-
+print.rcmdcheck <- function(
+  x,
+  header = TRUE,
+  test_output = getOption("rcmdcheck.test_output", FALSE),
+  ...
+) {
   if (header) {
     cat_head("R CMD check results", paste(x$package, x$version))
     cat_line("Duration: ", pretty_sec(x$duration))
@@ -61,20 +64,17 @@ make_line <- function(x) {
   paste(rep(symbol$line, x), collapse = "")
 }
 
-header_line <- function(left = "", right = "",
-                        width = cli::console_width()) {
-
+header_line <- function(left = "", right = "", width = cli::console_width()) {
   ncl <- nchar(left)
   ncr <- nchar(right)
 
   if (ncl) left <- paste0(" ", left, " ")
   if (ncr) right <- paste0(" ", right, " ")
-  ndashes <- width - ((ncl > 0) * 2  + (ncr > 0) * 2 + ncl + ncr)
+  ndashes <- width - ((ncl > 0) * 2 + (ncr > 0) * 2 + ncl + ncr)
 
   if (ndashes < 4) {
     right <- substr(right, 1, ncr - (4 - ndashes))
     ncr <- nchar(right)
-
   }
 
   dashes <- make_line(ndashes)
@@ -96,12 +96,18 @@ cat_head <- function(left, right = "", style = cyan) {
 }
 
 print_entry <- function(entry, entry_style) {
-
   lines <- strsplit(entry, "\n", fixed = TRUE)[[1]]
 
-  if (grepl(paste0("^(checking tests)|",
-                   "(running tests for arch)|",
-                   "(checking whether package)"), lines[1])) {
+  if (
+    grepl(
+      paste0(
+        "^(checking tests)|",
+        "(running tests for arch)|",
+        "(checking whether package)"
+      ),
+      lines[1]
+    )
+  ) {
     lines <- c(lines[1], "See below...")
   }
 
@@ -134,15 +140,12 @@ print.rcmdcheck_summary <- function(x, ..., line = TRUE) {
 }
 
 summary_entry <- function(x, name) {
-
   len <- length(x[[name]])
 
   if (len == 0) {
     cat(green(paste(len, name, symbol$tick)))
-
   } else if (len == 1) {
     cat(red(paste(len, sub("s$", "", name), symbol$cross)))
-
   } else {
     cat(red(paste(len, name, symbol$cross)))
   }

@@ -1,4 +1,3 @@
-
 #' Run an `R CMD check` process in the background
 #'
 #' rcmdcheck_process is an R6 class, that extends the
@@ -60,15 +59,29 @@ rcmdcheck_process <- R6Class(
   inherit = callr::rcmd_process,
 
   public = list(
+    initialize = function(
+      path = ".",
+      args = character(),
+      build_args = character(),
+      check_dir = NULL,
+      libpath = .libPaths(),
+      repos = getOption("repos"),
+      env = character()
+    )
+      rcc_init(
+        self,
+        private,
+        super,
+        path,
+        args,
+        build_args,
+        check_dir,
+        libpath,
+        repos,
+        env
+      ),
 
-    initialize = function(path = ".", args = character(),
-      build_args = character(), check_dir = NULL, libpath = .libPaths(),
-      repos = getOption("repos"), env = character())
-      rcc_init(self, private, super, path, args, build_args, check_dir,
-               libpath, repos, env),
-
-    parse_results = function()
-      rcc_parse_results(self, private),
+    parse_results = function() rcc_parse_results(self, private),
 
     read_output_lines = function(...) {
       l <- super$read_output_lines(...)
@@ -86,10 +99,9 @@ rcmdcheck_process <- R6Class(
       private$killed <- TRUE
       super$kill(...)
     }
-
   ),
   private = list(
-    path  = NULL,
+    path = NULL,
     check_dir = NULL,
     targz = NULL,
     description = NULL,
@@ -104,9 +116,18 @@ rcmdcheck_process <- R6Class(
 #' @importFrom callr rcmd_process rcmd_process_options
 #' @importFrom desc desc
 
-rcc_init <- function(self, private, super, path, args, build_args,
-                     check_dir, libpath, repos, env) {
-
+rcc_init <- function(
+  self,
+  private,
+  super,
+  path,
+  args,
+  build_args,
+  check_dir,
+  libpath,
+  repos,
+  env
+) {
   if (file.info(path)$isdir) {
     path <- find_package_root_file(path = path)
   } else {
@@ -126,8 +147,13 @@ rcc_init <- function(self, private, super, path, args, build_args,
 
   pkgbuild::without_cache(pkgbuild::local_build_tools())
 
-  targz <- build_package(path, check_dir, build_args = build_args,
-                         libpath = libpath, quiet = TRUE)
+  targz <- build_package(
+    path,
+    check_dir,
+    build_args = build_args,
+    libpath = libpath,
+    quiet = TRUE
+  )
 
   private$description <- desc(path)
   private$path <- path
@@ -146,7 +172,7 @@ rcc_init <- function(self, private, super, path, args, build_args,
   # probably inside test cases of some package
   if (Sys.getenv("R_TESTS", "") == "") {
     private$session_output <- tempfile()
-    private$tempfiles  <- c(private$session_output, profile)
+    private$tempfiles <- c(private$session_output, profile)
     profile <- make_fake_profile(package, private$session_output, libdir)
     chkenv["R_TESTS"] <- profile
   }
@@ -182,12 +208,12 @@ rcc_parse_results <- function(self, private) {
   on.exit(unlink(private$tempfiles, recursive = TRUE), add = TRUE)
 
   new_rcmdcheck(
-    stdout =       paste(win2unix(private$cstdout), collapse = ""),
-    stderr =       paste(win2unix(private$cstderr), collapse = ""),
-    description =  private$description,
-    status =       self$get_exit_status(),
-    duration =     duration(self$get_start_time()),
-    timeout =      private$killed,
+    stdout = paste(win2unix(private$cstdout), collapse = ""),
+    stderr = paste(win2unix(private$cstderr), collapse = ""),
+    description = private$description,
+    status = self$get_exit_status(),
+    duration = duration(self$get_start_time()),
+    timeout = private$killed,
     session_info = private$session_output
   )
 }

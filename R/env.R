@@ -1,4 +1,3 @@
-
 set_env <- function(path, targz, desc, envir = parent.frame()) {
   pkg <- desc$get("Package")
   ign <- as_flag(desc$get("Config/rcmdcheck/ignore-inconsequential-notes"))
@@ -8,23 +7,29 @@ set_env <- function(path, targz, desc, envir = parent.frame()) {
 
 ignore_env_config <- function() {
   data_literal(
-    "docs"         | "envvar"                                    | "value",
+    "docs" | "envvar" | "value",
     # ---------------------------------------------------------------------
-    "report large package sizes"
-                   | "_R_CHECK_PKG_SIZES_"                       | FALSE,
-    "check cross-references in Rd files"
-                   | "_R_CHECK_RD_XREFS_"                        | FALSE,
-    "NOTE if package requires GNU make"
-                   | "_R_CHECK_CRAN_INCOMING_NOTE_GNU_MAKE_"     | FALSE,
-    "report marked non-ASCII strings in datasets"
-                   | "_R_CHECK_PACKAGE_DATASETS_SUPPRESS_NOTES_" | TRUE
+    "report large package sizes" | "_R_CHECK_PKG_SIZES_" | FALSE,
+    "check cross-references in Rd files" | "_R_CHECK_RD_XREFS_" | FALSE,
+    "NOTE if package requires GNU make" |
+      "_R_CHECK_CRAN_INCOMING_NOTE_GNU_MAKE_" |
+      FALSE,
+    "report marked non-ASCII strings in datasets" |
+      "_R_CHECK_PACKAGE_DATASETS_SUPPRESS_NOTES_" |
+      TRUE
   )
 }
 
 format_env_docs <- function() {
   envs <- ignore_env_config()
   paste0(
-    "* ", envs$docs, " (`", envs$envvar, " = ", envs$value, "`)",
+    "* ",
+    envs$docs,
+    " (`",
+    envs$envvar,
+    " = ",
+    envs$value,
+    "`)",
     collapse = ",\n"
   )
 }
@@ -50,7 +55,8 @@ load_env <- function(path, targz, package, envir = parent.frame()) {
     utils::untar(
       targz,
       file.path(package, "tools", "check.env"),
-      exdir = tmp, tar = "internal"
+      exdir = tmp,
+      tar = "internal"
     )
     env_path <- file.path(tmp, package, "tools", "check.env")
   }
@@ -83,15 +89,15 @@ ignore_empty_lines <- function(lines) {
 }
 
 line_regex <- paste0(
-  "^\\s*",                  # leading whitespace
+  "^\\s*", # leading whitespace
   "(?<export>export\\s+)?", # export, if given
-  "(?<key>[^=]+)",          # variable name
-  "=",                      # equals sign
-  "(?<q>['\"]?)",           # quote if present
-  "(?<value>.*)",           # value
-  "\\g{q}",                 # the same quote again
-  "\\s*",                   # trailing whitespace
-  "$"                       # end of line
+  "(?<key>[^=]+)", # variable name
+  "=", # equals sign
+  "(?<q>['\"]?)", # quote if present
+  "(?<value>.*)", # value
+  "\\g{q}", # the same quote again
+  "\\s*", # trailing whitespace
+  "$" # end of line
 )
 
 parse_dot_line <- function(line) {

@@ -1,9 +1,14 @@
 
 # rcmdcheck (development version)
 
+* Fixed an issue where check output could be malformed when testing
+  packages with multiple test files (#205, @kevinushey).
+
 * Update pkgdown template and move url to https://rcmdcheck.r-lib.org.
 
 * Fix usage of `libpath` argument (#195).
+
+* `cran_check_results()` works again.
 
 # rcmdcheck 1.4.0
 

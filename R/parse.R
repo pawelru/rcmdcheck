@@ -1,13 +1,13 @@
-
-new_rcmdcheck <- function(stdout,
-                          stderr,
-                          description,
-                          status = 0L,
-                          duration = 0L,
-                          timeout = FALSE,
-                          test_fail = NULL,
-                          session_info = NULL) {
-
+new_rcmdcheck <- function(
+  stdout,
+  stderr,
+  description,
+  status = 0L,
+  duration = 0L,
+  timeout = FALSE,
+  test_fail = NULL,
+  session_info = NULL
+) {
   stopifnot(inherits(description, "description"))
 
   # Make sure we don't have \r on windows
@@ -21,25 +21,25 @@ new_rcmdcheck <- function(stdout,
 
   res <- structure(
     list(
-      stdout      = stdout,
-      stderr      = stderr,
-      status      = status,
-      duration    = duration,
-      timeout     = timeout,
+      stdout = stdout,
+      stderr = stderr,
+      status = status,
+      duration = duration,
+      timeout = timeout,
 
-      rversion    = parse_rversion(entries),
-      platform    = parse_platform(entries),
-      errors      = notdone(grep("ERROR\n",   entries, value = TRUE)),
-      warnings    = notdone(grep("WARNING\n", entries, value = TRUE)),
-      notes       = notdone(grep("NOTE\n",    entries, value = TRUE)),
+      rversion = parse_rversion(entries),
+      platform = parse_platform(entries),
+      errors = notdone(grep("ERROR\n", entries, value = TRUE)),
+      warnings = notdone(grep("WARNING\n", entries, value = TRUE)),
+      notes = notdone(grep("NOTE\n", entries, value = TRUE)),
 
       description = description$str(normalize = FALSE),
-      package     = description$get("Package")[[1]],
-      version     = description$get("Version")[[1]],
-      cran        = description$get_field("Repository", "") == "CRAN",
-      bioc        = description$has_fields("biocViews"),
+      package = description$get("Package")[[1]],
+      version = description$get("Version")[[1]],
+      cran = description$get_field("Repository", "") == "CRAN",
+      bioc = description$has_fields("biocViews"),
 
-      checkdir    = checkdir,
+      checkdir = checkdir,
       test_fail = test_fail %||% get_test_fail(checkdir),
       test_output = get_test_output(checkdir, pattern = "\\.Rout"),
       install_out = get_install_out(checkdir)
@@ -71,7 +71,15 @@ parse_checkdir <- function(entries) {
 
   line <- grep("^using log directory", entries, value = TRUE)
   sub(
-    paste0("^using log directory [", quotes, "]([^", quotes, "]+)[", quotes, "]$"),
+    paste0(
+      "^using log directory [",
+      quotes,
+      "]([^",
+      quotes,
+      "]+)[",
+      quotes,
+      "]$"
+    ),
     "\\1",
     line,
     perl = TRUE
@@ -89,7 +97,8 @@ get_test_output <- function(path, pattern, encoding = "") {
   rel_paths <- ifelse(
     test_dirs == "tests",
     basename(paths),
-    paste0(basename(paths), " (", sub("^tests_", "", test_dirs), ")"))
+    paste0(basename(paths), " (", sub("^tests_", "", test_dirs), ")")
+  )
   names(paths) <- gsub(pattern, "", rel_paths, useBytes = TRUE)
 
   trim_header <- function(x) {
@@ -103,12 +112,13 @@ get_test_output <- function(path, pattern, encoding = "") {
 }
 
 #' @export
-as.data.frame.rcmdcheck <- function(x,
-                                    row.names = NULL,
-                                    optional = FALSE,
-                                    ...,
-                                    which) {
-
+as.data.frame.rcmdcheck <- function(
+  x,
+  row.names = NULL,
+  optional = FALSE,
+  ...,
+  which
+) {
   entries <- list(
     type = c(
       rep("error", length(x$errors)),
@@ -120,10 +130,10 @@ as.data.frame.rcmdcheck <- function(x,
 
   data_frame(
     which = which,
-    platform = x$platform %||% NA_character_,
-    rversion = x$rversion %||% NA_character_,
-    package = x$package %||% NA_character_,
-    version = x$version %||% NA_character_,
+    platform = x$platform %|0|% NA_character_,
+    rversion = x$rversion %|0|% NA_character_,
+    package = x$package %|0|% NA_character_,
+    version = x$version %|0|% NA_character_,
     type = entries$type,
     output = entries$output,
     hash = hash_check(entries$output)
@@ -160,7 +170,6 @@ hash_check <- function(check) {
 #' @importFrom desc description
 
 parse_check <- function(file = NULL, text = NULL, ...) {
-
   ## If no text, then find the file, and read it in
   if (is.null(text)) {
     file <- find_check_file(file)
@@ -195,8 +204,16 @@ validEnc <- function(x) {
 }
 
 reencode_log <- function(log) {
-  csline <- head(grep("^\\* using session charset: ",
-                      log, perl = TRUE, useBytes = TRUE, value = TRUE), 1)
+  csline <- head(
+    grep(
+      "^\\* using session charset: ",
+      log,
+      perl = TRUE,
+      useBytes = TRUE,
+      value = TRUE
+    ),
+    1
+  )
   if (length(csline)) {
     cs <- strsplit(csline, ": ")[[1]][2]
     log <- iconv(log, cs, "UTF-8", sub = "byte")
@@ -245,7 +262,6 @@ parse_check_url <- function(url, quiet = FALSE) {
 }
 
 find_check_file <- function(file) {
-
   if (is.null(file)) file <- "."
 
   if (file.exists(file) && file.info(file)$isdir) {

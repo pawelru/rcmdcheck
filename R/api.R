@@ -1,4 +1,3 @@
-
 #' Query R CMD check results and parameters
 #'
 #' @param check A check result.

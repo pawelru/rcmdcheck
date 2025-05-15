@@ -1,4 +1,3 @@
-
 #' @importFrom pkgbuild pkgbuild_process
 #' @importFrom withr with_libpaths
 
@@ -28,15 +27,21 @@ build_package <- function(path, tmpdir, build_args, libpath, quiet) {
         on.exit(proc$kill(), add = TRUE)
 
         callback <- detect_callback()
-        while (proc$is_incomplete_output() ||
-               proc$is_incomplete_error()
-               || proc$is_alive()) {
+        while (
+          proc$is_incomplete_output() ||
+            proc$is_incomplete_error() ||
+            proc$is_alive()
+        ) {
           proc$poll_io(-1)
           out <- proc$read_output()
           err <- proc$read_error()
           if (!quiet) {
-            out <- sub("(checking for file .)/.*DESCRIPTION(.)",
-                       "\\1.../DESCRIPTION\\2", out, perl = TRUE)
+            out <- sub(
+              "(checking for file .)/.*DESCRIPTION(.)",
+              "\\1.../DESCRIPTION\\2",
+              out,
+              perl = TRUE
+            )
             callback(out)
             callback(err)
           }
@@ -44,7 +49,6 @@ build_package <- function(path, tmpdir, build_args, libpath, quiet) {
         proc$get_built_file()
       }
     )
-
   } else {
     dest <- file.path(tmpdir, basename(path))
     if (!file.exists(dest) || normalizePath(dest) != path) {

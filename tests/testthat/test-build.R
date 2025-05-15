@@ -1,4 +1,3 @@
-
 test_that("input targz and targz to check can be the same", {
   f1 <- tempfile()
   on.exit(unlink(f1), add = TRUE)
@@ -9,7 +8,6 @@ test_that("input targz and targz to check can be the same", {
 })
 
 test_that("different packages in the same dir are fine", {
-
   dir.create(tmp <- tempfile())
   on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
 
@@ -28,11 +26,8 @@ test_that("different packages in the same dir are fine", {
 })
 
 test_that("protection against ~ deletion", {
-  mockery::stub(check_for_tilde_file, "dir", c("foo", "~", "bar"))
-  expect_error(
-    check_for_tilde_file(tempfile()),
-    "delete your entire home directory"
-  )
+  local_mocked_bindings(dir = function(...) c("foo", "~", "bar"))
+  expect_snapshot(error = TRUE, check_for_tilde_file(tempfile()))
 })
 
 test_that("inst/doc can be kept", {
